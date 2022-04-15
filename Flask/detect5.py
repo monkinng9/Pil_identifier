@@ -29,14 +29,6 @@ tf.gfile = tf.io.gfile
 PATH_TO_LABELS = 'mscoco_label_map.pbtxt'
 category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
 
-# If you want to test the code with your images, just add path to the images to the TEST_IMAGE_PATHS.
-image_path = 'images/dog.jpg'
-
-model_dir = "faster_rcnn_inception_resnet_v2_640x640_coco17_tpu-8\saved_model"
-model = tf.saved_model.load(str(model_dir))
-model = model.signatures['serving_default']
-detection_model = model
-
 def run_inference_for_single_image(model, image):
   image = np.asarray(image)
   # The input needs to be a tensor, convert it using `tf.convert_to_tensor`.
@@ -89,4 +81,3 @@ def show_inference(model, image_path):
 
   print(output_dict['detection_classes'][0])
 
-show_inference(detection_model, image_path)

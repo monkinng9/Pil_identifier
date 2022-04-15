@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from detect5 import *
 
 import werkzeug
 
@@ -8,8 +9,14 @@ app = Flask(__name__)
 def upload():
     if(request.method == "POST"):
         imagefile = request.files['image']
-        filename = werkzeug.utils.secure_filename(imagefile.filename)
-        imagefile.save("./uploadimages/" + filename)
+        
+        model_dir = "faster_rcnn_inception_resnet_v2_640x640_coco17_tpu-8\saved_model"
+        model = tf.saved_model.load(str(model_dir))
+        model = model.signatures['serving_default']
+        detection_model = model
+
+        show_inference(detection_model, imagefile)
+
         return jsonify({
             "message": "Image Uploaded Sucessfully"
         })
