@@ -19,6 +19,8 @@ from object_detection.utils import ops as utils_ops
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
+from read_label_map import *
+
 # patch tf1 into `utils.ops`
 utils_ops.tf = tf.compat.v1
 
@@ -79,5 +81,7 @@ def show_inference(model, image_path):
       use_normalized_coordinates=True,
       line_thickness=8)
 
-  print(output_dict['detection_classes'][0])
+  label_map = read_label_map(PATH_TO_LABELS)
+  display_name = label_map.get(output_dict['detection_classes'][0])
+  print (display_name)
 
