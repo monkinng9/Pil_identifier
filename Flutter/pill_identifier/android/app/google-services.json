@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "55893101104-l2s2ckivs9vkad216itvqvths500jsos.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pill_identifier",
+            "certificate_hash": "65c6165a60bc8bfbb206cbd10d7c4cb9df28097d"
+          }
+        },
+        {
           "client_id": "55893101104-850tjhcgu0g5rb38ldpgql16lcvo7v6a.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "55893101104-850tjhcgu0g5rb38ldpgql16lcvo7v6a.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "55893101104-a5s8o29b4spfa4g6o8pnd83on28li8ck.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pillIdentifier"
+              }
             }
           ]
         }
