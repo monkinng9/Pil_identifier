@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "55893101104",
+    "project_id": "pill-identifier-57849",
+    "storage_bucket": "pill-identifier-57849.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55893101104:android:64596830abd233d8b8bbf5",
+        "android_client_info": {
+          "package_name": "com.example.pill_identifier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55893101104-850tjhcgu0g5rb38ldpgql16lcvo7v6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYNxVxnJUBJvZ6NohRfrltXfNnkZS_NqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55893101104-850tjhcgu0g5rb38ldpgql16lcvo7v6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

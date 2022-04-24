@@ -17,8 +17,11 @@ def upload():
 
         show_inference(detection_model, imagefile)
 
+        print(show_inference.display_name)
+        # print(type(show_inference.display_name))
+
         return jsonify({
-            "message": "Image Uploaded Sucessfully"
+            "message": show_inference.display_name
         })
 
 if __name__ == "__main__":

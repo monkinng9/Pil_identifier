@@ -1,0 +1,10 @@
+@startuml tutorial express
+    entity Person {
+        ** id: <<PK>> **
+        ** name: varchar(128) **
+        ** age: integer (3) **
+        ** gender: enum (male, female)**
+        ** address: varchar(255) **
+    }
+
+@endstartuml

@@ -31,6 +31,9 @@ tf.gfile = tf.io.gfile
 PATH_TO_LABELS = 'mscoco_label_map.pbtxt'
 category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
 
+# Name display
+# display_name = ""
+
 def run_inference_for_single_image(model, image):
   image = np.asarray(image)
   # The input needs to be a tensor, convert it using `tf.convert_to_tensor`.
@@ -82,6 +85,5 @@ def show_inference(model, image_path):
       line_thickness=8)
 
   label_map = read_label_map(PATH_TO_LABELS)
-  display_name = label_map.get(output_dict['detection_classes'][0])
-  print (display_name)
+  show_inference.display_name = label_map.get(output_dict['detection_classes'][0])
 
