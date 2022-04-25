@@ -1,17 +1,17 @@
 # Table of Contents
-- [Store File] (#Pil_identifier)
-- [To-do List] (#To-do List)
-- [Features] (#Features)
+1. [Store File] (#Pil_identifier)
+2. [To-do List] (#To-do-List)
+3. [Features] (#Features)
 
 ---
 
-# Pil_identifier
+## Pil_identifier
 
 - faster_rcnn_inception_resnet_v2_640x640_coco17_tpu-8 [Download](https://drive.google.com/file/d/1hf3xRdbGpKeerWvzEZhnTc4OZkxeXZe7/view?usp=sharing)
 
 ---
 
-# To-do List
+## To-do List
 - [ ] Make Log in UI that with Email, Password and Gmail
 - [ ] Make Log in System (Fire_auth)
 - [ ] Make Store System (Firestore)
@@ -20,7 +20,7 @@
 
 ---
 
-# Features
+## Features
 - [ ] Log in with Email and Password
 - [ ] Log in with Google Account
 - [ ] Register
