@@ -1,4 +1,16 @@
+/// 1. การทำงานของการ Register Button
+/// - ทำการเรียกค่าจาก TextEditingController ทั้ง email และ password
+/// - ทำการ import flutterfire.dart
+///   - เก็บ register function
+/// - เมื่อกดปุ่ม register ใน onpressed จะทำการเรียก register function
+///     และนำข้อมูล email และ password ไปประมวลผล และ Navigate ไปยังหน้าต่อไป
+///     ด้วยค่า shouldNavigate ที่เป็น True
+
+/// 2. การทำงานของ SignIn Button
+/// - เป็นในลักษณะเดียวกันกับ Register Button
+
 import 'package:flutter/material.dart';
+import 'package:pill_identifier/net/flutterfire.dart';
 
 class Authentication extends StatefulWidget {
   const Authentication({Key? key}) : super(key: key);
@@ -48,7 +60,13 @@ class _AuthenticationState extends State<Authentication> {
                   color: Colors.white,
                 ),
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    bool shouldNavigate =
+                        await register(_emailField.text, _passwordField.text);
+                    if (shouldNavigate) {
+                      // Navigate
+                    }
+                  },
                   child: const Text("Register"),
                 ),
               ),
@@ -60,7 +78,13 @@ class _AuthenticationState extends State<Authentication> {
                   color: Colors.white,
                 ),
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    bool shouldNavigate =
+                        await signIn(_emailField.text, _passwordField.text);
+                    if (shouldNavigate) {
+                      // Navigate
+                    }
+                  },
                   child: const Text("Log in"),
                 ),
               ),
