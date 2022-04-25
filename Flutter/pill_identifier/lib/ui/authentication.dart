@@ -12,6 +12,8 @@
 import 'package:flutter/material.dart';
 import 'package:pill_identifier/net/flutterfire.dart';
 
+import 'home_view.dart';
+
 class Authentication extends StatefulWidget {
   const Authentication({Key? key}) : super(key: key);
 
@@ -64,7 +66,12 @@ class _AuthenticationState extends State<Authentication> {
                     bool shouldNavigate =
                         await register(_emailField.text, _passwordField.text);
                     if (shouldNavigate) {
-                      // Navigate
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => const HomeView(),
+                        ),
+                      );
                     }
                   },
                   child: const Text("Register"),
@@ -82,7 +89,12 @@ class _AuthenticationState extends State<Authentication> {
                     bool shouldNavigate =
                         await signIn(_emailField.text, _passwordField.text);
                     if (shouldNavigate) {
-                      // Navigate
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => const HomeView(),
+                        ),
+                      );
                     }
                   },
                   child: const Text("Log in"),
