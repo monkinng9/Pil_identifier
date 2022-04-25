@@ -21,7 +21,7 @@ class _AuthenticationState extends State<Authentication> {
         child: Padding(
           padding: const EdgeInsets.all(40),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextFormField(
                   controller: _emailField,
