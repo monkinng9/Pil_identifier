@@ -7,7 +7,6 @@ import 'package:pill_identifier/ui/authentication.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pill_identifier/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,19 +25,5 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: Authentication(),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: Container());
   }
 }
