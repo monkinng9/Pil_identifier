@@ -27,11 +27,11 @@ class _AuthenticationState extends State<Authentication> {
 
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
+    return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(color: Colors.blueAccent),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Padding(
           padding: const EdgeInsets.all(40),
           child: Column(
@@ -41,7 +41,7 @@ class _AuthenticationState extends State<Authentication> {
                   controller: _emailField,
                   decoration: const InputDecoration(
                     hintText: "something@email.com",
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: TextStyle(color: Colors.grey),
                     labelText: "Email",
                     labelStyle: TextStyle(color: Colors.white),
                   )),
@@ -50,7 +50,7 @@ class _AuthenticationState extends State<Authentication> {
                   obscureText: true,
                   decoration: const InputDecoration(
                     hintText: "password",
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: TextStyle(color: Colors.grey),
                     labelText: "Password",
                     labelStyle: TextStyle(color: Colors.white),
                   )),
