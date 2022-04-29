@@ -11,99 +11,375 @@
 
 import 'package:flutter/material.dart';
 import 'package:pill_identifier/net/flutterfire.dart';
+import 'package:pill_identifier/ui/widgets.dart';
 
-import 'home_view.dart';
-
-class Authentication extends StatefulWidget {
-  const Authentication({Key? key}) : super(key: key);
-
-  @override
-  State<Authentication> createState() => _AuthenticationState();
+enum ApplicationLoginState {
+  loggedOut,
+  emailAddress,
+  register,
+  password,
+  loggedIn,
 }
 
-class _AuthenticationState extends State<Authentication> {
-  final TextEditingController _emailField = TextEditingController();
-  final TextEditingController _passwordField = TextEditingController();
+class Authentication extends StatelessWidget {
+  const Authentication({
+    required this.loginState,
+    required this.email,
+    required this.startLoginFlow,
+    required this.verifyEmail,
+    required this.signInWithEmailAndPassword,
+    required this.cancelRegistration,
+    required this.registerAccount,
+    required this.signOut,
+  });
+
+  final ApplicationLoginState loginState;
+  final String? email;
+  final void Function() startLoginFlow;
+  final void Function(
+    String email,
+    void Function(Exception e) error,
+  ) verifyEmail;
+  final void Function(
+    String email,
+    String password,
+    void Function(Exception e) error,
+  ) signInWithEmailAndPassword;
+  final void Function() cancelRegistration;
+  final void Function(
+    String email,
+    String displayName,
+    String password,
+    void Function(Exception e) error,
+  ) registerAccount;
+  final void Function() signOut;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(color: Colors.white),
-        child: Padding(
-          padding: const EdgeInsets.all(40),
+    switch (loginState) {
+      case ApplicationLoginState.loggedOut:
+        return Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TextFormField(
-                  controller: _emailField,
-                  decoration: const InputDecoration(
-                    hintText: "something@email.com",
-                    hintStyle: TextStyle(color: Colors.grey),
-                    labelText: "Email",
-                    labelStyle: TextStyle(color: Colors.white),
-                  )),
-              TextFormField(
-                  controller: _passwordField,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: "password",
-                    hintStyle: TextStyle(color: Colors.grey),
-                    labelText: "Password",
-                    labelStyle: TextStyle(color: Colors.white),
-                  )),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.4,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: Colors.white,
-                ),
-                child: MaterialButton(
-                  onPressed: () async {
-                    bool shouldNavigate =
-                        await register(_emailField.text, _passwordField.text);
-                    if (shouldNavigate) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const HomeView(),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text("Register"),
-                ),
+              StyledButton(
+                onPressed: () {
+                  startLoginFlow();
+                },
+                child: Text("Sign In with Email"),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.4,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  color: Colors.white,
-                ),
-                child: MaterialButton(
-                  onPressed: () async {
-                    bool shouldNavigate =
-                        await signIn(_emailField.text, _passwordField.text);
-                    if (shouldNavigate) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const HomeView(),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text("Log in"),
-                ),
+              const TextButton(
+                // ignore: avoid_print
+                onPressed: null,
+                child: Text('Forgot password?'),
+              ),
+              StyledButton(
+                onPressed: () {},
+                child: Text("Sign In with Google"),
               ),
             ],
           ),
+        );
+      case ApplicationLoginState.register:
+        return RegisterForm(
+          email: email!,
+          cancel: () {
+            cancelRegistration();
+          },
+          registerAccount: (
+            email,
+            displayName,
+            password,
+          ) {
+            registerAccount(
+                email,
+                displayName,
+                password,
+                (e) =>
+                    _showErrorDialog(context, 'Failed to create account', e));
+          },
+        );
+      case ApplicationLoginState.password:
+        return PasswordForm(
+          login: (email, password) {
+            signInWithEmailAndPassword(email, password,
+                (e) => _showErrorDialog(context, 'Failed to sign in', e));
+          },
+          cancel: () {
+            cancelRegistration();
+          },
+        );
+      case ApplicationLoginState.loggedIn:
+        return Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24, bottom: 8),
+              child: StyledButton(
+                onPressed: () {
+                  signOut();
+                },
+                child: const Text('LOGOUT'),
+              ),
+            ),
+          ],
+        );
+      default:
+        return Row(
+          children: const [
+            Text("Internal error, this shouldn't happen..."),
+          ],
+        );
+    }
+  }
+
+  void _showErrorDialog(BuildContext context, String title, Exception e) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 24),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  '${(e as dynamic).message}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            StyledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(color: Colors.deepPurple),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({
+    required this.registerAccount,
+    required this.cancel,
+    required this.email,
+  });
+  final String email;
+  final void Function(String email, String displayName, String password)
+      registerAccount;
+  final void Function() cancel;
+  @override
+  _RegisterFormState createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
+  final _formKey = GlobalKey<FormState>(debugLabel: '_RegisterFormState');
+  final _emailController = TextEditingController();
+  final _displayNameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.text = widget.email;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Header('Create account'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your email',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter your email address to continue';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TextFormField(
+                    controller: _displayNameController,
+                    decoration: const InputDecoration(
+                      hintText: 'First & last name',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter your account name';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      hintText: 'Password',
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: widget.cancel,
+                        child: const Text('CANCEL'),
+                      ),
+                      const SizedBox(width: 16),
+                      StyledButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            widget.registerAccount(
+                              _emailController.text,
+                              _displayNameController.text,
+                              _passwordController.text,
+                            );
+                          }
+                        },
+                        child: const Text('SAVE'),
+                      ),
+                      const SizedBox(width: 30),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+      ],
+    );
+  }
+}
+
+class PasswordForm extends StatefulWidget {
+  const PasswordForm({
+    required this.login,
+    required this.cancel,
+  });
+  final void Function(String email, String password) login;
+  final void Function() cancel;
+  @override
+  _PasswordFormState createState() => _PasswordFormState();
+}
+
+class _PasswordFormState extends State<PasswordForm> {
+  final _formKey = GlobalKey<FormState>(debugLabel: '_PasswordFormState');
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Header('Sign in'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter your email',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter your email address to continue';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      hintText: 'Password',
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const SizedBox(width: 16),
+                      StyledButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            widget.login(
+                              _emailController.text,
+                              _passwordController.text,
+                            );
+                          }
+                        },
+                        child: const Text('SIGN IN'),
+                      ),
+                      TextButton(
+                        onPressed: widget.cancel,
+                        child: const Text('CANCEL'),
+                      ),
+                      const SizedBox(width: 30),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
