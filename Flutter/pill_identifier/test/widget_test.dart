@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pill_identifier/detect.dart';
 
 import 'package:pill_identifier/main.dart';
 

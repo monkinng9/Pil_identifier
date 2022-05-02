@@ -104,6 +104,15 @@ class HomePage extends StatelessWidget {
                 signOut: appState.signOut,
               ),
             ),
+            Consumer<ApplicationState>(
+              builder: (context, appState, _) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (appState.loginState ==
+                      ApplicationLoginState.loggedIn) ...[Profile()],
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -197,5 +206,25 @@ class ApplicationState extends ChangeNotifier {
 
   void signOut() {
     FirebaseAuth.instance.signOut();
+  }
+}
+
+class Profile extends StatefulWidget {
+  var email = FirebaseAuth.instance.currentUser!.email;
+
+  // const Profile({required this.email});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Header('Sign in with ${widget.email}'),
+      ],
+    );
   }
 }
