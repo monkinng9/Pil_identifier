@@ -7,9 +7,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pill_identifier/ui/authentication.dart';
-import 'package:pill_identifier/ui/widgets.dart';
+import 'package:pill_identifier/screen/authentication.dart';
+import 'package:pill_identifier/common/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'firebase_options.dart';
 
@@ -101,7 +102,8 @@ class HomePage extends StatelessWidget {
                 signInWithEmailAndPassword: appState.signInWithEmailAndPassword,
                 cancelRegistration: appState.cancelRegistration,
                 registerAccount: appState.registerAccount,
-                signOut: appState.signOut,
+                signOut: appState.signOut, 
+                googleSignInflow: appState.signInWithGoogle,
               ),
             ),
             Consumer<ApplicationState>(
@@ -207,6 +209,23 @@ class ApplicationState extends ChangeNotifier {
   void signOut() {
     FirebaseAuth.instance.signOut();
   }
+
+  Future<UserCredential> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth?.accessToken,
+    idToken: googleAuth?.idToken,
+  );
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithCredential(credential);
+}
 }
 
 class Profile extends StatefulWidget {

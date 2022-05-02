@@ -10,8 +10,7 @@
 /// - เป็นในลักษณะเดียวกันกับ Register Button
 
 import 'package:flutter/material.dart';
-import 'package:pill_identifier/net/flutterfire.dart';
-import 'package:pill_identifier/ui/widgets.dart';
+import 'package:pill_identifier/common/widgets.dart';
 
 enum ApplicationLoginState {
   loggedOut,
@@ -26,6 +25,7 @@ class Authentication extends StatelessWidget {
     required this.loginState,
     required this.email,
     required this.startLoginFlow,
+    required this.googleSignInflow,
     required this.verifyEmail,
     required this.signInWithEmailAndPassword,
     required this.cancelRegistration,
@@ -36,6 +36,7 @@ class Authentication extends StatelessWidget {
   final ApplicationLoginState loginState;
   final String? email;
   final void Function() startLoginFlow;
+  final void Function() googleSignInflow;
   final void Function(
     String email,
     void Function(Exception e) error,
@@ -73,7 +74,9 @@ class Authentication extends StatelessWidget {
                 child: Text('Forgot password?'),
               ),
               StyledButton(
-                onPressed: () {},
+                onPressed: () {
+                  googleSignInflow();
+                },
                 child: Text("Sign In with Google"),
               ),
             ],
