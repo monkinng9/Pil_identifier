@@ -7,32 +7,7 @@ import 'package:provider/provider.dart';
 class Login_view extends StatelessWidget {
   Login_view({Key? key}) : super(key: key);
 
-  final Widget titleSection = Container(
-    padding: const EdgeInsets.all(32),
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: const Center(
-                  child: Text(
-                    'Pill Identifier',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
+  
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +16,6 @@ class Login_view extends StatelessWidget {
       home: Scaffold(
         body: ListView(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Image(
-                image: AssetImage('assets/codelab.png'),
-              ),
-            ),
-            titleSection,
             Consumer<FirebaseAuthProvider>(
               builder: (context, appState, _) => Authentication(
                 email: appState.email,
@@ -66,7 +34,7 @@ class Login_view extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (appState.loginState ==
-                      ApplicationLoginState.loggedIn) ...[Profile_fill()],
+                      ApplicationLoginState.loggedIn) ...[ProfileFill()],
                 ],
               ),
             ),

@@ -20,6 +20,33 @@ enum ApplicationLoginState {
   loggedIn,
 }
 
+final Widget titleSection = Container(
+  padding: const EdgeInsets.all(32),
+  child: Row(
+    children: [
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: const Center(
+                child: Text(
+                  'Pill Identifier',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+);
+
 class Authentication extends StatelessWidget {
   const Authentication({
     required this.loginState,
@@ -62,6 +89,13 @@ class Authentication extends StatelessWidget {
         return Center(
           child: Column(
             children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Image(
+                  image: AssetImage('assets/codelab.png'),
+                ),
+              ),
+              titleSection,
               StyledButton(
                 onPressed: () {
                   startLoginFlow();
