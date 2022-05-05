@@ -7,15 +7,13 @@ import 'package:provider/provider.dart';
 class Login_view extends StatelessWidget {
   Login_view({Key? key}) : super(key: key);
 
-  
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pill Identifier',
       home: Scaffold(
         body: ListView(
-          children: [
+          children: <Widget>[
             Consumer<FirebaseAuthProvider>(
               builder: (context, appState, _) => Authentication(
                 email: appState.email,
@@ -27,15 +25,6 @@ class Login_view extends StatelessWidget {
                 registerAccount: appState.registerAccount,
                 signOut: appState.signOut,
                 googleSignInflow: appState.signInWithGoogle,
-              ),
-            ),
-            Consumer<FirebaseAuthProvider>(
-              builder: (context, appState, _) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (appState.loginState ==
-                      ApplicationLoginState.loggedIn) ...[ProfileFill()],
-                ],
               ),
             ),
           ],

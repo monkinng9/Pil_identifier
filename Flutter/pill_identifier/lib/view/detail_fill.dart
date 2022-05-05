@@ -14,6 +14,10 @@ enum GenderCharacter { men, women }
 class ProfileFill extends StatefulWidget {
   ProfileFill({Key? key}) : super(key: key);
   final String? email = FirebaseAuth.instance.currentUser!.email;
+  void signOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
   @override
   State<ProfileFill> createState() => _ProfileFillState();
 }
@@ -36,82 +40,89 @@ class _ProfileFillState extends State<ProfileFill> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Text("Welcome to Pill Identifier"),
-          TextFormField(
-            controller: _emailController,
-            readOnly: true,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.person),
-              hintText: 'Email@gmail.com',
-              labelText: 'Email *',
-            ),
-            validator: (String? value) {
-              return (value != null && value.contains('@')) ? null : 'Required';
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 24, bottom: 8),
+          child: StyledButton(
+            onPressed: () {
+              widget.signOut();
+            },
+            child: const Text('LOGOUT'),
+          ),
+        ),
+        Text("Welcome to Pill Identifier"),
+        TextFormField(
+          controller: _emailController,
+          readOnly: true,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.person),
+            hintText: 'Email@gmail.com',
+            labelText: 'Email *',
+          ),
+          validator: (String? value) {
+            return (value != null && value.contains('@')) ? null : 'Required';
+          },
+        ),
+        TextFormField(
+          controller: _displayNameController,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.person),
+            hintText: 'FirstName LastName',
+            labelText: 'Name *',
+          ),
+          validator: (String? value) {
+            return (value != null && value.contains('@'))
+                ? 'Do not use the @ char.'
+                : 'Required';
+          },
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 10, bottom: 5),
+          child: Header("Gender"),
+        ),
+        ListTile(
+          title: const Text('Men'),
+          leading: Radio<GenderCharacter>(
+            value: GenderCharacter.men,
+            groupValue: _genderCharacter,
+            onChanged: (GenderCharacter? value) {
+              setState(() {
+                _genderCharacter = value;
+              });
             },
           ),
-          TextFormField(
-            controller: _displayNameController,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.person),
-              hintText: 'FirstName LastName',
-              labelText: 'Name *',
-            ),
-            validator: (String? value) {
-              return (value != null && value.contains('@'))
-                  ? 'Do not use the @ char.'
-                  : 'Required';
+        ),
+        ListTile(
+          title: const Text('Women'),
+          leading: Radio<GenderCharacter>(
+            value: GenderCharacter.women,
+            groupValue: _genderCharacter,
+            onChanged: (GenderCharacter? value) {
+              setState(() {
+                _genderCharacter = value;
+              });
             },
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 5),
-            child: Header("Gender"),
+        ),
+        const SizedBox(height: 10),
+        const Header("Birthday"),
+        Text(
+          '$selectedDate'.split(' ')[0],
+          style: const TextStyle(fontSize: 18),
+        ),
+        ElevatedButton(
+          onPressed: () => _openDatePicker(context),
+          child: const Text('Select Birthday'),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 24, bottom: 8),
+          child: StyledButton(
+            onPressed: () {},
+            child: const Text('Submit'),
           ),
-          ListTile(
-            title: const Text('Men'),
-            leading: Radio<GenderCharacter>(
-              value: GenderCharacter.men,
-              groupValue: _genderCharacter,
-              onChanged: (GenderCharacter? value) {
-                setState(() {
-                  _genderCharacter = value;
-                });
-              },
-            ),
-          ),
-          ListTile(
-            title: const Text('Women'),
-            leading: Radio<GenderCharacter>(
-              value: GenderCharacter.women,
-              groupValue: _genderCharacter,
-              onChanged: (GenderCharacter? value) {
-                setState(() {
-                  _genderCharacter = value;
-                });
-              },
-            ),
-          ),
-          const SizedBox(height: 10),
-          const Header("Birthday"),
-          Text(
-            '$selectedDate'.split(' ')[0],
-            style: const TextStyle(fontSize: 18),
-          ),
-          ElevatedButton(
-            onPressed: () => _openDatePicker(context),
-            child: const Text('Select Birthday'),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 24, bottom: 8),
-            child: StyledButton(
-              onPressed: () {},
-              child: const Text('Submit'),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

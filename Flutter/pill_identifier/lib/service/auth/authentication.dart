@@ -12,6 +12,8 @@
 import 'package:flutter/material.dart';
 import 'package:pill_identifier/common/widgets.dart';
 
+import '../../view/detail_fill.dart';
+
 enum ApplicationLoginState {
   loggedOut,
   emailAddress,
@@ -146,19 +148,7 @@ class Authentication extends StatelessWidget {
           },
         );
       case ApplicationLoginState.loggedIn:
-        return Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24, bottom: 8),
-              child: StyledButton(
-                onPressed: () {
-                  signOut();
-                },
-                child: const Text('LOGOUT'),
-              ),
-            ),
-          ],
-        );
+        return ProfileFill();
       default:
         return Row(
           children: const [
